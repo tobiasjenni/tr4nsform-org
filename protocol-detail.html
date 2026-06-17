@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sleep Architecture Protocol — TR4NSFORM</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Georgia:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:#080808;color:#fff;font-family:"Helvetica Neue",Arial,sans-serif;font-weight:300;line-height:1.6;-webkit-font-smoothing:antialiased}
+a{color:#C8D6E5;text-decoration:none;transition:color .2s}
+a:hover{color:#fff}
+::selection{background:rgba(200,214,229,.3);color:#fff}
+.container{max-width:900px;margin:0 auto;padding:0 24px}
+/* Nav */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(8,8,8,.92);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-bottom:1px solid rgba(200,214,229,.08)}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;height:64px;max-width:1200px;margin:0 auto;padding:0 24px}
+.nav-logo{font-size:1.2rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#fff}
+.nav-logo span{color:#C8D6E5}
+.nav-links{display:flex;gap:28px;list-style:none;font-size:.85rem;font-weight:400;letter-spacing:.5px;text-transform:uppercase}
+.nav-links a{color:rgba(255,255,255,.65);padding:4px 0;border-bottom:1px solid transparent;transition:all .2s}
+.nav-links a:hover,.nav-links a.active{color:#fff;border-bottom-color:#C8D6E5}
+.mobile-menu-btn{display:none;background:none;border:none;color:#fff;font-size:1.5rem;cursor:pointer}
+/* Hero */
+.page-hero{padding:140px 24px 60px;text-align:center;position:relative}
+.page-hero::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:radial-gradient(ellipse at center 40%,rgba(200,214,229,.03) 0%,transparent 60%);pointer-events:none}
+.page-hero h1{font-family:Georgia,serif;font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:700;position:relative;z-index:1}
+.page-hero .breadcrumb{font-size:.8rem;color:rgba(255,255,255,.35);margin-bottom:12px;position:relative;z-index:1}
+.page-hero .breadcrumb a{color:rgba(255,255,255,.45)}
+.page-hero .breadcrumb a:hover{color:#C8D6E5}
+.page-hero p{color:rgba(255,255,255,.5);margin-top:8px;font-size:1rem;position:relative;z-index:1}
+/* Content sections */
+.content-section{padding:40px 0 60px}
+.content-section h2{font-family:Georgia,serif;font-size:1.6rem;font-weight:700;margin-bottom:20px}
+.content-section h3{font-size:1.1rem;font-weight:600;margin-bottom:12px;color:#C8D6E5}
+.content-section p{color:rgba(255,255,255,.6);margin-bottom:16px;line-height:1.8;font-size:.95rem}
+.content-section ul{list-style:none;padding:0;margin-bottom:24px}
+.content-section ul li{padding:10px 0 10px 24px;border-left:2px solid rgba(200,214,229,.15);margin-bottom:8px;color:rgba(255,255,255,.55);font-size:.9rem;line-height:1.5}
+.content-section ul li strong{color:#fff;font-weight:500}
+.pill-list{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px}
+.pill{display:inline-block;padding:6px 16px;background:rgba(200,214,229,.06);border:1px solid rgba(200,214,229,.1);border-radius:20px;font-size:.82rem;color:#C8D6E5;letter-spacing:.3px}
+.lifestyle-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:30px}
+.lifestyle-item{background:rgba(255,255,255,.015);border:1px solid rgba(200,214,229,.06);border-radius:6px;padding:20px;text-align:center}
+.lifestyle-item .l-icon{font-size:1.5rem;margin-bottom:6px;color:#C8D6E5}
+.lifestyle-item .l-label{font-size:.8rem;color:rgba(255,255,255,.5)}
+/* LOCKED section */
+.locked-section{position:relative;margin:60px 0;border-radius:8px;overflow:hidden;background:rgba(255,255,255,.01);border:1px solid rgba(200,214,229,.08)}
+.locked-content{filter:blur(8px);-webkit-filter:blur(8px);pointer-events:none;user-select:none;padding:40px 32px;opacity:.3}
+.locked-content h3{color:rgba(255,255,255,.5)!important}
+.locked-content p,.locked-content li{color:rgba(255,255,255,.3)!important}
+.lock-overlay{position:absolute;top:0;left:0;right:0;bottom:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(8,8,8,.6);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);z-index:10;padding:32px;text-align:center}
+.lock-overlay .lock-icon{font-size:2.5rem;margin-bottom:12px;opacity:.6}
+.lock-overlay h3{font-family:Georgia,serif;font-size:1.5rem;font-weight:700;margin-bottom:8px;color:#fff}
+.lock-overlay p{color:rgba(255,255,255,.5);max-width:400px;margin:0 auto 24px;font-size:.95rem}
+.lock-overlay .btn-unlock{padding:16px 48px;background:#C8D6E5;color:#080808;border:none;border-radius:4px;font-size:1rem;font-weight:600;letter-spacing:.5px;text-transform:uppercase;cursor:pointer;transition:all .3s}
+.lock-overlay .btn-unlock:hover{background:#fff;box-shadow:0 0 30px rgba(200,214,229,.2)}
+.lock-overlay .price-sub{font-size:.8rem;color:rgba(255,255,255,.3);margin-top:8px}
+/* Trust badges */
+.trust-badges{display:flex;gap:20px;justify-content:center;flex-wrap:wrap;margin:60px 0 40px}
+.trust-badge{text-align:center;padding:20px 28px;background:rgba(255,255,255,.015);border:1px solid rgba(200,214,229,.06);border-radius:6px;min-width:160px}
+.trust-badge .t-icon{font-size:1.5rem;margin-bottom:6px;color:#C8D6E5}
+.trust-badge .t-label{font-size:.8rem;font-weight:500;color:rgba(255,255,255,.7)}
+.trust-badge .t-sub{font-size:.7rem;color:rgba(255,255,255,.35);margin-top:2px}
+/* Dosing table mockup */
+.mock-table{width:100%;border-collapse:collapse;margin-bottom:24px}
+.mock-table th,.mock-table td{padding:12px 16px;text-align:left;border-bottom:1px solid rgba(200,214,229,.06);font-size:.88rem}
+.mock-table th{color:#C8D6E5;font-weight:500;text-transform:uppercase;letter-spacing:.5px;font-size:.75rem}
+.mock-table td{color:rgba(255,255,255,.5)}
+.mock-table tr:hover td{color:rgba(255,255,255,.7)}
+/* Footer */
+footer{border-top:1px solid rgba(200,214,229,.06);padding:60px 0 40px}
+.footer-inner{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:40px;max-width:1200px;margin:0 auto;padding:0 24px}
+.footer-col h4{font-size:.8rem;font-weight:600;letter-spacing:2px;text-transform:uppercase;margin-bottom:16px;color:rgba(255,255,255,.8)}
+.footer-col ul{list-style:none}
+.footer-col ul li{margin-bottom:8px}
+.footer-col ul li a{font-size:.85rem;color:rgba(255,255,255,.4)}
+.footer-col ul li a:hover{color:#C8D6E5}
+.footer-bottom{margin-top:48px;padding-top:24px;border-top:1px solid rgba(200,214,229,.06);text-align:center;font-size:.75rem;color:rgba(255,255,255,.3);letter-spacing:.5px}
+.footer-bottom .watermark{color:rgba(200,214,229,.2);font-weight:400;margin-top:4px;letter-spacing:2px;font-size:.7rem}
+@media(max-width:768px){
+.nav-links{display:none;position:fixed;top:64px;left:0;right:0;background:rgba(8,8,8,.98);flex-direction:column;padding:24px;gap:16px;border-bottom:1px solid rgba(200,214,229,.08)}
+.nav-links.show{display:flex}
+.mobile-menu-btn{display:block}
+.page-hero{padding:100px 24px 40px}
+.lock-overlay h3{font-size:1.2rem}
+.lock-overlay .btn-unlock{padding:14px 32px;font-size:.9rem}
+.trust-badges{gap:12px}
+.trust-badge{min-width:120px;padding:16px 20px}
+}
+</style>
+</head>
+<body>
+<nav>
+<div class="nav-inner">
+<a href="index.html" class="nav-logo">TR4NS<span>FORM</span></a>
+<button class="mobile-menu-btn" onclick="document.querySelector('.nav-links').classList.toggle('show')">☰</button>
+<ul class="nav-links">
+<li><a href="protocols.html" class="active">Protocols</a></li>
+<li><a href="peptides.html">Peptides</a></li>
+<li><a href="builder.html">Builder</a></li>
+<li><a href="dashboard.html">Dashboard</a></li>
+<li><a href="login.html">Login</a></li>
+</ul>
+</div>
+</nav>
+
+<section class="page-hero">
+<div class="breadcrumb"><a href="protocols.html">Protocols</a> / Sleep Architecture</div>
+<h1>Sleep Architecture Protocol</h1>
+<p>Deep sleep optimization through peptide-mediated GABA modulation, cortisol regulation, and circadian entrainment.</p>
+</section>
+
+<div class="container">
+<!-- FREE CONTENT -->
+<div class="content-section">
+<h2>Protocol Overview</h2>
+<p>The Sleep Architecture Protocol is designed for individuals seeking to optimize their sleep quality, depth, and overall architecture. Unlike conventional sleep aids that simply induce drowsiness, this protocol targets the underlying neurochemical pathways regulating sleep cycles, including GABAergic signaling, cortisol rhythm, and melatonin synthesis.</p>
+<p>Based on current peptide research and clinical applications, the protocol emphasizes non-addictive, short-intervention strategies that can restore natural sleep patterns within 4-8 weeks when combined with proper sleep hygiene.</p>
+
+<h3>Primary Goals</h3>
+<ul>
+<li><strong>Increase deep sleep (N3)</strong> — Enhance slow-wave sleep duration for physical repair and glymphatic clearance</li>
+<li><strong>Optimize REM architecture</strong> — Support cognitive consolidation and emotional regulation</li>
+<li><strong>Regulate cortisol rhythm</strong> — Lower nocturnal cortisol and support healthy HPA axis function</li>
+<li><strong>Improve sleep latency</strong> — Reduce time to fall asleep without pharmaceutical sedation</li>
+</ul>
+
+<h3>Key Peptides</h3>
+<div class="pill-list">
+<span class="pill">DSIP (Delta Sleep-Inducing Peptide)</span>
+<span class="pill">Epithalon</span>
+<span class="pill">Selank</span>
+<span class="pill">BPC-157</span>
+<span class="pill">Semax</span>
+</div>
+
+<h3>Lifestyle Pillars</h3>
+<div class="lifestyle-grid">
+<div class="lifestyle-item"><div class="l-icon">🌅</div><div class="l-label">Morning light exposure &gt;10 min</div></div>
+<div class="lifestyle-item"><div class="l-icon">🌡️</div><div class="l-label">Cool sleep environment 18-20°C</div></div>
+<div class="lifestyle-item"><div class="l-icon">⏰</div><div class="l-label">Consistent sleep-wake schedule</div></div>
+<div class="lifestyle-item"><div class="l-icon">📱</div><div class="l-label">No screens 90 min before bed</div></div>
+<div class="lifestyle-item"><div class="l-icon">🧘</div><div class="l-label">Evening wind-down protocol</div></div>
+</div>
+</div>
+
+<!-- LOCKED SECTION -->
+<div class="locked-section">
+<div class="locked-content">
+<h3>Full Injection Plan</h3>
+<p>The complete dosing protocol includes precise microgram adjustments, injection timing relative to bedtime, cycling schedules, and stacking guidance. Below is a sample of the locked content.</p>
+
+<table class="mock-table">
+<tr><th>Compound</th><th>Dose</th><th>Timing</th><th>Frequency</th></tr>
+<tr><td>DSIP</td><td>100-200 mcg</td><td>30 min pre-bed</td><td>5 on / 2 off</td></tr>
+<tr><td>Epithalon</td><td>5-10 mg</td><td>Morning</td><td>10-day cycle</td></tr>
+<tr><td>Selank</td><td>200-400 mcg</td><td>Evening</td><td>Daily</td></tr>
+<tr><td>BPC-157</td><td>250-500 mcg</td><td>Pre-bed</td><td>Daily</td></tr>
+</table>
+
+<h3>Cycling Schedule</h3>
+<ul>
+<li>Phase 1 (Weeks 1-4): Load phase — daily DSIP + Selank</li>
+<li>Phase 2 (Weeks 5-8): Maintenance — every other day, add Epithalon cycle</li>
+<li>Phase 3 (Weeks 9-12): Taper — 2x weekly, assess sleep architecture</li>
+</ul>
+
+<h3>Contraindications</h3>
+<ul>
+<li>Active cancer or history of hormone-sensitive malignancies</li>
+<li>Pregnancy or nursing</li>
+<li>Severe autoimmune conditions without medical supervision</li>
+<li>Concurrent use of benzodiazepines or Z-drugs without physician oversight</li>
+</ul>
+
+<h3>Synergy Compounds</h3>
+<div class="pill-list">
+<span class="pill">Magnesium Threonate</span>
+<span class="pill">Glycine (3g before bed)</span>
+<span class="pill">Apigenin</span>
+<span class="pill">Theanine (200-400 mg)</span>
+</div>
+</div>
+
+<div class="lock-overlay">
+<div class="lock-icon">🔒</div>
+<h3>Unlock Full Protocol — $9</h3>
+<p>The complete injection plan, dosing table, cycling schedule, contraindications, and synergy compounds are locked.</p>
+<button class="btn-unlock" onclick="alert('Stripe payment placeholder: $9 unlock would process here.')">Unlock for $9</button>
+<p class="price-sub">One-time payment. Instant access. Yours forever.</p>
+</div>
+</div>
+
+<!-- Trust Badges -->
+<div class="trust-badges">
+<div class="trust-badge">
+<div class="t-icon">📋</div>
+<div class="t-label">Clinical Review</div>
+<div class="t-sub">Reviewed by medical advisory</div>
+</div>
+<div class="trust-badge">
+<div class="t-icon">🔬</div>
+<div class="t-label">Evidence-Based</div>
+<div class="t-sub">Sources: PubMed & clinical data</div>
+</div>
+<div class="trust-badge">
+<div class="t-icon">📅</div>
+<div class="t-label">Updated 2026</div>
+<div class="t-sub">Current as of Q1 2026</div>
+</div>
+</div>
+</div>
+
+<footer>
+<div class="footer-inner">
+<div class="footer-col">
+<h4>TR4NSFORM</h4>
+<ul>
+<li><a href="index.html">Home</a></li>
+<li><a href="protocols.html">Protocols</a></li>
+<li><a href="peptides.html">Peptides</a></li>
+<li><a href="builder.html">Builder</a></li>
+</ul>
+</div>
+<div class="footer-col">
+<h4>Account</h4>
+<ul>
+<li><a href="dashboard.html">Dashboard</a></li>
+<li><a href="login.html">Login</a></li>
+</ul>
+</div>
+<div class="footer-col">
+<h4>Legal</h4>
+<ul>
+<li><a href="#" onclick="return false">Terms of Service</a></li>
+<li><a href="#" onclick="return false">Privacy Policy</a></li>
+<li><a href="#" onclick="return false">Disclaimer</a></li>
+</ul>
+</div>
+</div>
+<div class="footer-bottom">
+TR4NSFORM &middot; APAC &middot; Singapore<br>
+&copy; 2026 TR4NSFORM Pte. Ltd.<br>
+</div>
+</footer>
+</body>
+</html>

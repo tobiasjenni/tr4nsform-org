@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Protocol Builder — TR4NSFORM</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Georgia:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:#080808;color:#fff;font-family:"Helvetica Neue",Arial,sans-serif;font-weight:300;line-height:1.6;-webkit-font-smoothing:antialiased}
+a{color:#C8D6E5;text-decoration:none;transition:color .2s}
+a:hover{color:#fff}
+::selection{background:rgba(200,214,229,.3);color:#fff}
+.container{max-width:700px;margin:0 auto;padding:0 24px}
+/* Nav */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(8,8,8,.92);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-bottom:1px solid rgba(200,214,229,.08)}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;height:64px;max-width:1200px;margin:0 auto;padding:0 24px}
+.nav-logo{font-size:1.2rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#fff}
+.nav-logo span{color:#C8D6E5}
+.nav-links{display:flex;gap:28px;list-style:none;font-size:.85rem;font-weight:400;letter-spacing:.5px;text-transform:uppercase}
+.nav-links a{color:rgba(255,255,255,.65);padding:4px 0;border-bottom:1px solid transparent;transition:all .2s}
+.nav-links a:hover,.nav-links a.active{color:#fff;border-bottom-color:#C8D6E5}
+.mobile-menu-btn{display:none;background:none;border:none;color:#fff;font-size:1.5rem;cursor:pointer}
+/* Builder */
+.builder-wrap{padding:140px 24px 80px;min-height:100vh}
+.builder-progress{display:flex;justify-content:center;gap:8px;margin-bottom:40px}
+.progress-dot{width:10px;height:10px;border-radius:50%;background:rgba(200,214,229,.1);border:1px solid rgba(200,214,229,.15);transition:all .3s}
+.progress-dot.active{background:#C8D6E5;border-color:#C8D6E5;box-shadow:0 0 12px rgba(200,214,229,.15)}
+.progress-dot.done{background:rgba(200,214,229,.3);border-color:rgba(200,214,229,.25)}
+.builder-step{display:none}
+.builder-step.active{display:block}
+.builder-step h2{font-family:Georgia,serif;font-size:1.6rem;font-weight:700;margin-bottom:8px}
+.builder-step .step-desc{color:rgba(255,255,255,.45);margin-bottom:32px;font-size:.95rem}
+/* Checkbox grid */
+.checkbox-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;margin-bottom:32px}
+.checkbox-card{display:flex;align-items:center;justify-content:center;padding:16px 12px;background:rgba(255,255,255,.015);border:1px solid rgba(200,214,229,.06);border-radius:6px;cursor:pointer;transition:all .2s;text-align:center;font-size:.85rem;font-weight:400;color:rgba(255,255,255,.5);user-select:none}
+.checkbox-card:hover{border-color:rgba(200,214,229,.15);color:rgba(255,255,255,.7)}
+.checkbox-card.selected{background:rgba(200,214,229,.08);border-color:rgba(200,214,229,.25);color:#C8D6E5}
+/* Radio groups */
+.radio-group{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:32px}
+.radio-card{display:flex;align-items:center;justify-content:center;padding:14px 24px;background:rgba(255,255,255,.015);border:1px solid rgba(200,214,229,.06);border-radius:6px;cursor:pointer;transition:all .2s;font-size:.85rem;color:rgba(255,255,255,.5);user-select:none;min-width:100px}
+.radio-card:hover{border-color:rgba(200,214,229,.15);color:rgba(255,255,255,.7)}
+.radio-card.selected{background:rgba(200,214,229,.08);border-color:rgba(200,214,229,.25);color:#C8D6E5}
+/* Buttons */
+.builder-nav{display:flex;gap:12px;margin-top:24px}
+.btn{display:inline-block;padding:12px 32px;border-radius:4px;font-size:.85rem;font-weight:600;letter-spacing:.5px;text-transform:uppercase;cursor:pointer;transition:all .3s;border:1px solid transparent;font-family:"Helvetica Neue",Arial,sans-serif}
+.btn-primary{background:#C8D6E5;color:#080808;border-color:#C8D6E5}
+.btn-primary:hover{background:#fff;border-color:#fff;box-shadow:0 0 20px rgba(200,214,229,.15)}
+.btn-outline{background:transparent;color:#C8D6E5;border-color:rgba(200,214,229,.3)}
+.btn-outline:hover{background:rgba(200,214,229,.06);border-color:#C8D6E5}
+.btn:disabled{opacity:.3;cursor:not-allowed}
+/* Results */
+.result-card{background:rgba(255,255,255,.02);border:1px solid rgba(200,214,229,.08);border-radius:8px;padding:36px 32px;text-align:center;margin-bottom:24px}
+.result-card .r-icon{font-size:2.5rem;margin-bottom:12px;color:#C8D6E5}
+.result-card h3{font-family:Georgia,serif;font-size:1.4rem;font-weight:700;margin-bottom:6px}
+.result-card .r-protocol{color:#C8D6E5;font-size:1.1rem;font-weight:500;margin-bottom:16px}
+.result-card .r-peps{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:16px}
+.result-card .r-pep{padding:6px 16px;background:rgba(200,214,229,.05);border:1px solid rgba(200,214,229,.1);border-radius:20px;font-size:.8rem;color:#C8D6E5}
+.result-card p{color:rgba(255,255,255,.45);font-size:.9rem;margin-bottom:20px}
+/* Footer */
+footer{border-top:1px solid rgba(200,214,229,.06);padding:60px 0 40px}
+.footer-inner{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:40px;max-width:1200px;margin:0 auto;padding:0 24px}
+.footer-col h4{font-size:.8rem;font-weight:600;letter-spacing:2px;text-transform:uppercase;margin-bottom:16px;color:rgba(255,255,255,.8)}
+.footer-col ul{list-style:none}
+.footer-col ul li{margin-bottom:8px}
+.footer-col ul li a{font-size:.85rem;color:rgba(255,255,255,.4)}
+.footer-col ul li a:hover{color:#C8D6E5}
+.footer-bottom{margin-top:48px;padding-top:24px;border-top:1px solid rgba(200,214,229,.06);text-align:center;font-size:.75rem;color:rgba(255,255,255,.3);letter-spacing:.5px}
+.footer-bottom .watermark{color:rgba(200,214,229,.2);font-weight:400;margin-top:4px;letter-spacing:2px;font-size:.7rem}
+@media(max-width:768px){
+.nav-links{display:none;position:fixed;top:64px;left:0;right:0;background:rgba(8,8,8,.98);flex-direction:column;padding:24px;gap:16px;border-bottom:1px solid rgba(200,214,229,.08)}
+.nav-links.show{display:flex}
+.mobile-menu-btn{display:block}
+.builder-wrap{padding:100px 16px 60px}
+.checkbox-grid{grid-template-columns:repeat(auto-fill,minmax(120px,1fr))}
+}
+</style>
+</head>
+<body>
+<nav>
+<div class="nav-inner">
+<a href="index.html" class="nav-logo">TR4NS<span>FORM</span></a>
+<button class="mobile-menu-btn" onclick="document.querySelector('.nav-links').classList.toggle('show')">☰</button>
+<ul class="nav-links">
+<li><a href="protocols.html">Protocols</a></li>
+<li><a href="peptides.html">Peptides</a></li>
+<li><a href="builder.html" class="active">Builder</a></li>
+<li><a href="dashboard.html">Dashboard</a></li>
+<li><a href="login.html">Login</a></li>
+</ul>
+</div>
+</nav>
+
+<div class="builder-wrap">
+<div class="container">
+<div class="builder-progress" id="progressDots">
+<span class="progress-dot active"></span>
+<span class="progress-dot"></span>
+<span class="progress-dot"></span>
+<span class="progress-dot"></span>
+</div>
+
+<!-- Step 1: Goals -->
+<div class="builder-step active" id="step1">
+<h2>What are your primary goals?</h2>
+<p class="step-desc">Select one or more areas you want to optimize. This determines your protocol recommendation.</p>
+<div class="checkbox-grid" id="goalsGrid">
+<div class="checkbox-card" data-value="sleep" onclick="toggleGoal(this)">🌙 Sleep</div>
+<div class="checkbox-card" data-value="cognition" onclick="toggleGoal(this)">🧠 Cognition</div>
+<div class="checkbox-card" data-value="energy" onclick="toggleGoal(this)">⚡ Energy</div>
+<div class="checkbox-card" data-value="recovery" onclick="toggleGoal(this)">🔄 Recovery</div>
+<div class="checkbox-card" data-value="hormones" onclick="toggleGoal(this)">⚖️ Hormones</div>
+<div class="checkbox-card" data-value="longevity" onclick="toggleGoal(this)">⌛ Longevity</div>
+<div class="checkbox-card" data-value="performance" onclick="toggleGoal(this)">🏆 Performance</div>
+<div class="checkbox-card" data-value="gut" onclick="toggleGoal(this)">🫀 Gut</div>
+<div class="checkbox-card" data-value="immunity" onclick="toggleGoal(this)">🛡️ Immunity</div>
+<div class="checkbox-card" data-value="intimacy" onclick="toggleGoal(this)">💕 Intimacy</div>
+</div>
+<div class="builder-nav">
+<button class="btn btn-primary" onclick="nextStep()">Continue</button>
+</div>
+</div>
+
+<!-- Step 2: About You -->
+<div class="builder-step" id="step2">
+<h2>Tell us about yourself</h2>
+<p class="step-desc">Basic demographic and lifestyle data helps calibrate your protocol.</p>
+
+<p style="color:rgba(255,255,255,.6);font-size:.85rem;margin-bottom:8px">Age range</p>
+<div class="radio-group" id="ageGroup">
+<div class="radio-card" data-value="20s" onclick="selectRadio(this,'ageGroup')">20s</div>
+<div class="radio-card" data-value="30s" onclick="selectRadio(this,'ageGroup')">30s</div>
+<div class="radio-card" data-value="40s" onclick="selectRadio(this,'ageGroup')">40s</div>
+<div class="radio-card" data-value="50s+" onclick="selectRadio(this,'ageGroup')">50s+</div>
+</div>
+
+<p style="color:rgba(255,255,255,.6);font-size:.85rem;margin-bottom:8px">Sex</p>
+<div class="radio-group" id="sexGroup">
+<div class="radio-card" data-value="Male" onclick="selectRadio(this,'sexGroup')">Male</div>
+<div class="radio-card" data-value="Female" onclick="selectRadio(this,'sexGroup')">Female</div>
+<div class="radio-card" data-value="Other" onclick="selectRadio(this,'sexGroup')">Other</div>
+</div>
+
+<p style="color:rgba(255,255,255,.6);font-size:.85rem;margin-bottom:8px">Activity level</p>
+<div class="radio-group" id="activityGroup">
+<div class="radio-card" data-value="Sedentary" onclick="selectRadio(this,'activityGroup')">Sedentary</div>
+<div class="radio-card" data-value="Active" onclick="selectRadio(this,'activityGroup')">Active</div>
+<div class="radio-card" data-value="Athlete" onclick="selectRadio(this,'activityGroup')">Athlete</div>
+</div>
+
+<div class="builder-nav">
+<button class="btn btn-outline" onclick="prevStep()">Back</button>
+<button class="btn btn-primary" onclick="nextStep()">Continue</button>
+</div>
+</div>
+
+<!-- Step 3: Contraindications -->
+<div class="builder-step" id="step3">
+<h2>Any contraindications?</h2>
+<p class="step-desc">Certain conditions require medical consultation before starting peptide protocols. Select all that apply.</p>
+<div class="checkbox-grid" id="contraGrid">
+<div class="checkbox-card" data-value="cancer" onclick="toggleContra(this)">⚠️ Active cancer</div>
+<div class="checkbox-card" data-value="pregnancy" onclick="toggleContra(this)">⚠️ Pregnancy</div>
+<div class="checkbox-card" data-value="autoimmune" onclick="toggleContra(this)">⚠️ Autoimmune condition</div>
+<div class="checkbox-card" data-value="none" onclick="toggleContra(this)">✅ None of the above</div>
+</div>
+<div class="builder-nav">
+<button class="btn btn-outline" onclick="prevStep()">Back</button>
+<button class="btn btn-primary" onclick="showResults()">Get My Protocol</button>
+</div>
+</div>
+
+<!-- Step 4: Results -->
+<div class="builder-step" id="step4">
+<div id="resultsContent"></div>
+<div class="builder-nav" style="justify-content:center">
+<button class="btn btn-outline" onclick="resetBuilder()">Start Over</button>
+</div>
+</div>
+
+</div>
+</div>
+
+<footer>
+<div class="footer-inner">
+<div class="footer-col">
+<h4>TR4NSFORM</h4>
+<ul>
+<li><a href="index.html">Home</a></li>
+<li><a href="protocols.html">Protocols</a></li>
+<li><a href="peptides.html">Peptides</a></li>
+<li><a href="builder.html">Builder</a></li>
+</ul>
+</div>
+<div class="footer-col">
+<h4>Account</h4>
+<ul>
+<li><a href="dashboard.html">Dashboard</a></li>
+<li><a href="login.html">Login</a></li>
+</ul>
+</div>
+<div class="footer-col">
+<h4>Legal</h4>
+<ul>
+<li><a href="#" onclick="return false">Terms of Service</a></li>
+<li><a href="#" onclick="return false">Privacy Policy</a></li>
+<li><a href="#" onclick="return false">Disclaimer</a></li>
+</ul>
+</div>
+</div>
+<div class="footer-bottom">
+TR4NSFORM &middot; APAC &middot; Singapore<br>
+&copy; 2026 TR4NSFORM Pte. Ltd.<br>
+</div>
+</footer>
+
+<script>
+let currentStep = 1;
+let selectedGoals = [];
+let selectedAge = null;
+let selectedSex = null;
+let selectedActivity = null;
+let selectedContra = [];
+
+const goalToProtocol = {
+sleep: {protocol:"Sleep Architecture",peps:["DSIP","Epithalon","Selank"]},
+cognition: {protocol:"Brain & Cognition",peps:["Semax","Cerebrolysin","Dihexa"]},
+energy: {protocol:"Energy & Mitochondria",peps:["SS-31","NAD+","PQQ"]},
+recovery: {protocol:"Recovery & Repair",peps:["BPC-157","TB-500","GHK-Cu"]},
+hormones: {protocol:"Hormonal Balance",peps:["Ipamorelin","CJC-1295","Tesamorelin"]},
+longevity: {protocol:"Longevity & Anti-Ageing",peps:["Epithalon","Rapamycin","NMN"]},
+performance: {protocol:"Peak Performance",peps:["BPC-157","TB-500","MOTS-c"]},
+gut: {protocol:"Gut Microbiome",peps:["BPC-157","KPV","Larazotide"]},
+immunity: {protocol:"Immune Fortification",peps:["Thymosin Alpha-1","LL-37","VIP"]},
+intimacy: {protocol:"Sensu (Intimacy & Vitality)",peps:["PT-141","Bremelanotide","Melanotan II"]}
+};
+
+function toggleGoal(el){
+if(el.classList.contains('selected')){
+el.classList.remove('selected');
+selectedGoals = selectedGoals.filter(v => v !== el.dataset.value);
+} else {
+document.querySelectorAll('#contraGrid .checkbox-card').forEach(c => c.classList.remove('selected'));
+selectedContra = [];
+el.classList.add('selected');
+selectedGoals.push(el.dataset.value);
+}
+}
+
+function toggleContra(el){
+if(el.dataset.value === 'none'){
+document.querySelectorAll('#contraGrid .checkbox-card').forEach(c => c.classList.remove('selected'));
+el.classList.add('selected');
+selectedContra = ['none'];
+} else {
+document.querySelector('#contraGrid .checkbox-card[data-value="none"]').classList.remove('selected');
+selectedContra = selectedContra.filter(v => v !== 'none');
+if(el.classList.contains('selected')){
+el.classList.remove('selected');
+selectedContra = selectedContra.filter(v => v !== el.dataset.value);
+} else {
+el.classList.add('selected');
+selectedContra.push(el.dataset.value);
+}
+}
+}
+
+function selectRadio(el,group){
+const parent = document.getElementById(group);
+parent.querySelectorAll('.radio-card').forEach(c => c.classList.remove('selected'));
+el.classList.add('selected');
+if(group === 'ageGroup') selectedAge = el.dataset.value;
+else if(group === 'sexGroup') selectedSex = el.dataset.value;
+else if(group === 'activityGroup') selectedActivity = el.dataset.value;
+}
+
+function goToStep(n){
+document.querySelectorAll('.builder-step').forEach(s => s.classList.remove('active'));
+document.getElementById('step'+n).classList.add('active');
+document.querySelectorAll('.progress-dot').forEach((d,i) => {
+d.classList.remove('active','done');
+if(i+1 === n) d.classList.add('active');
+else if(i+1 < n) d.classList.add('done');
+});
+currentStep = n;
+window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function nextStep(){
+if(currentStep === 1 && selectedGoals.length === 0){alert('Please select at least one goal.');return;}
+if(currentStep === 2 && (!selectedAge || !selectedSex || !selectedActivity)){alert('Please fill in all fields.');return;}
+goToStep(currentStep + 1);
+}
+
+function prevStep(){
+goToStep(currentStep - 1);
+}
+
+function showResults(){
+if(selectedContra.length > 0 && !selectedContra.includes('none')){
+const r = document.getElementById('resultsContent');
+r.innerHTML = `<div class="result-card"><div class="r-icon">⚠️</div><h3>Medical Consultation Recommended</h3><p style="color:rgba(255,255,255,.5);max-width:500px;margin:0 auto">Some of your selections indicate potential contraindications. We strongly recommend consulting a qualified healthcare professional before starting any peptide protocol.</p><p style="color:rgba(200,214,229,.6);font-size:.85rem;margin-top:16px">Your protocol recommendation is still available below.</p></div>`;
+}
+const goals = selectedGoals.length > 0 ? selectedGoals : ['longevity'];
+const topGoal = goals[0];
+const result = goalToProtocol[topGoal] || goalToProtocol.longevity;
+
+const allPeps = [...new Set(goals.flatMap(g => (goalToProtocol[g]||goalToProtocol.longevity).peps))].slice(0,3);
+if(allPeps.length === 0) allPeps.push(...result.peps);
+
+const r = document.getElementById('resultsContent');
+r.innerHTML = `
+<div class="result-card">
+<div class="r-icon">🧬</div>
+<h3>Your Recommended Protocol</h3>
+<div class="r-protocol">${result.protocol}</div>
+<div class="r-peps">${allPeps.map(p => `<span class="r-pep">${p}</span>`).join('')}</div>
+<p>Based on your goals: ${goals.join(', ')}</p>
+<button class="btn btn-primary" onclick="alert('Stripe payment placeholder: Unlock for $9 would process here.')" style="margin-top:8px">Unlock Full Protocol — $9</button>
+<p style="font-size:.75rem;color:rgba(255,255,255,.25);margin-top:8px">One-time payment. Instant access. Yours forever.</p>
+</div>
+<div style="text-align:center;margin-top:16px">
+<a href="protocol-detail.html?protocol=${encodeURIComponent(result.protocol.toLowerCase().replace(/[^a-z]/g,'-'))}" class="btn btn-outline" style="margin-right:8px">View Free Overview</a>
+<a href="peptides.html" class="btn btn-outline">Browse Peptide Library</a>
+</div>
+`;
+goToStep(4);
+}
+
+function resetBuilder(){
+selectedGoals = [];
+selectedAge = null;
+selectedSex = null;
+selectedActivity = null;
+selectedContra = [];
+document.querySelectorAll('.checkbox-card').forEach(c => c.classList.remove('selected'));
+document.querySelectorAll('.radio-card').forEach(c => c.classList.remove('selected'));
+document.getElementById('resultsContent').innerHTML = '';
+goToStep(1);
+}
+</script>
+</body>
+</html>

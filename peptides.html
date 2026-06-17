@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Peptide Library — TR4NSFORM</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Georgia:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:#080808;color:#fff;font-family:"Helvetica Neue",Arial,sans-serif;font-weight:300;line-height:1.6;-webkit-font-smoothing:antialiased}
+a{color:#C8D6E5;text-decoration:none;transition:color .2s}
+a:hover{color:#fff}
+::selection{background:rgba(200,214,229,.3);color:#fff}
+.container{max-width:1200px;margin:0 auto;padding:0 24px}
+/* Nav */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(8,8,8,.92);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-bottom:1px solid rgba(200,214,229,.08)}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;height:64px;max-width:1200px;margin:0 auto;padding:0 24px}
+.nav-logo{font-size:1.2rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#fff}
+.nav-logo span{color:#C8D6E5}
+.nav-links{display:flex;gap:28px;list-style:none;font-size:.85rem;font-weight:400;letter-spacing:.5px;text-transform:uppercase}
+.nav-links a{color:rgba(255,255,255,.65);padding:4px 0;border-bottom:1px solid transparent;transition:all .2s}
+.nav-links a:hover,.nav-links a.active{color:#fff;border-bottom-color:#C8D6E5}
+.mobile-menu-btn{display:none;background:none;border:none;color:#fff;font-size:1.5rem;cursor:pointer}
+/* Hero */
+.page-hero{padding:140px 24px 40px;text-align:center;position:relative}
+.page-hero::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:radial-gradient(ellipse at center 40%,rgba(200,214,229,.03) 0%,transparent 60%);pointer-events:none}
+.page-hero h1{font-family:Georgia,serif;font-size:clamp(2rem,4vw,3.2rem);font-weight:700;position:relative;z-index:1}
+.page-hero p{color:rgba(255,255,255,.5);margin-top:8px;font-size:1.05rem;position:relative;z-index:1}
+/* Search bar */
+.search-bar{max-width:600px;margin:24px auto 40px;padding:0 24px;position:relative;z-index:1}
+.search-bar input{width:100%;padding:14px 20px;background:rgba(255,255,255,.04);border:1px solid rgba(200,214,229,.1);border-radius:6px;color:#fff;font-size:.95rem;font-family:"Helvetica Neue",Arial,sans-serif;outline:none;transition:border-color .2s}
+.search-bar input::placeholder{color:rgba(255,255,255,.25)}
+.search-bar input:focus{border-color:rgba(200,214,229,.4)}
+/* Filter pills */
+.filter-bar{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:40px;padding:0 24px}
+.filter-pill{padding:6px 16px;border:1px solid rgba(200,214,229,.1);border-radius:20px;background:transparent;color:rgba(255,255,255,.5);font-size:.78rem;cursor:pointer;transition:all .2s;font-family:"Helvetica Neue",Arial,sans-serif}
+.filter-pill:hover{color:#C8D6E5;border-color:rgba(200,214,229,.25)}
+.filter-pill.active{background:rgba(200,214,229,.1);color:#C8D6E5;border-color:rgba(200,214,229,.25)}
+/* Grid */
+.peptides-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px;padding:0 24px 80px;max-width:1200px;margin:0 auto}
+.peptide-card{background:rgba(255,255,255,.012);border:1px solid rgba(200,214,229,.05);border-radius:6px;padding:24px 20px;transition:all .3s;display:flex;flex-direction:column}
+.peptide-card:hover{background:rgba(255,255,255,.025);border-color:rgba(200,214,229,.12);transform:translateY(-1px)}
+.peptide-card .p-name{font-size:.95rem;font-weight:600;margin-bottom:4px;letter-spacing:-.2px}
+.peptide-card .p-mech{font-size:.78rem;color:rgba(255,255,255,.45);line-height:1.5;margin-bottom:12px;flex:1}
+.peptide-card .p-tags{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:12px}
+.peptide-card .p-tag{font-size:.65rem;letter-spacing:.3px;text-transform:uppercase;padding:2px 10px;border-radius:10px;background:rgba(200,214,229,.05);border:1px solid rgba(200,214,229,.06);color:rgba(200,214,229,.6)}
+.peptide-card .p-view{font-size:.72rem;text-transform:uppercase;letter-spacing:.5px;color:#C8D6E5;padding:6px 0;border:none;background:none;cursor:pointer;align-self:flex-start;transition:color .2s;font-family:"Helvetica Neue",Arial,sans-serif}
+.peptide-card .p-view:hover{color:#fff}
+.no-results{text-align:center;padding:80px 24px;color:rgba(255,255,255,.3);grid-column:1/-1;display:none}
+/* Footer */
+footer{border-top:1px solid rgba(200,214,229,.06);padding:60px 0 40px}
+.footer-inner{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:40px;max-width:1200px;margin:0 auto;padding:0 24px}
+.footer-col h4{font-size:.8rem;font-weight:600;letter-spacing:2px;text-transform:uppercase;margin-bottom:16px;color:rgba(255,255,255,.8)}
+.footer-col ul{list-style:none}
+.footer-col ul li{margin-bottom:8px}
+.footer-col ul li a{font-size:.85rem;color:rgba(255,255,255,.4)}
+.footer-col ul li a:hover{color:#C8D6E5}
+.footer-bottom{margin-top:48px;padding-top:24px;border-top:1px solid rgba(200,214,229,.06);text-align:center;font-size:.75rem;color:rgba(255,255,255,.3);letter-spacing:.5px}
+.footer-bottom .watermark{color:rgba(200,214,229,.2);font-weight:400;margin-top:4px;letter-spacing:2px;font-size:.7rem}
+@media(max-width:768px){
+.nav-links{display:none;position:fixed;top:64px;left:0;right:0;background:rgba(8,8,8,.98);flex-direction:column;padding:24px;gap:16px;border-bottom:1px solid rgba(200,214,229,.08)}
+.nav-links.show{display:flex}
+.mobile-menu-btn{display:block}
+.page-hero{padding:100px 24px 30px}
+.peptides-grid{grid-template-columns:1fr 1fr;padding-left:16px;padding-right:16px;gap:10px}
+}
+@media(max-width:480px){
+.peptides-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<nav>
+<div class="nav-inner">
+<a href="index.html" class="nav-logo">TR4NS<span>FORM</span></a>
+<button class="mobile-menu-btn" onclick="document.querySelector('.nav-links').classList.toggle('show')">☰</button>
+<ul class="nav-links">
+<li><a href="protocols.html">Protocols</a></li>
+<li><a href="peptides.html" class="active">Peptides</a></li>
+<li><a href="builder.html">Builder</a></li>
+<li><a href="dashboard.html">Dashboard</a></li>
+<li><a href="login.html">Login</a></li>
+</ul>
+</div>
+</nav>
+
+<section class="page-hero">
+<h1>Peptide Library — 50 Compounds</h1>
+<p>Comprehensive database of peptides and bioactive compounds. Search by name or filter by category.</p>
+</section>
+
+<div class="search-bar">
+<input type="text" id="peptideSearch" placeholder="Search peptides..." oninput="filterPeptides()">
+</div>
+
+<div class="filter-bar" id="filterBar">
+<button class="filter-pill active" data-cat="all" onclick="setFilter('all')">All</button>
+<button class="filter-pill" data-cat="repair" onclick="setFilter('repair')">Repair</button>
+<button class="filter-pill" data-cat="cognitive" onclick="setFilter('cognitive')">Cognitive</button>
+<button class="filter-pill" data-cat="longevity" onclick="setFilter('longevity')">Longevity</button>
+<button class="filter-pill" data-cat="hormonal" onclick="setFilter('hormonal')">Hormonal</button>
+<button class="filter-pill" data-cat="metabolic" onclick="setFilter('metabolic')">Metabolic</button>
+<button class="filter-pill" data-cat="immune" onclick="setFilter('immune')">Immune</button>
+<button class="filter-pill" data-cat="performance" onclick="setFilter('performance')">Performance</button>
+</div>
+
+<div class="peptides-grid" id="peptideGrid">
+<!-- Generated by JS -->
+</div>
+
+<div class="no-results" id="noResults">No peptides match your search.</div>
+
+<footer>
+<div class="footer-inner">
+<div class="footer-col">
+<h4>TR4NSFORM</h4>
+<ul>
+<li><a href="index.html">Home</a></li>
+<li><a href="protocols.html">Protocols</a></li>
+<li><a href="peptides.html">Peptides</a></li>
+<li><a href="builder.html">Builder</a></li>
+</ul>
+</div>
+<div class="footer-col">
+<h4>Account</h4>
+<ul>
+<li><a href="dashboard.html">Dashboard</a></li>
+<li><a href="login.html">Login</a></li>
+</ul>
+</div>
+<div class="footer-col">
+<h4>Legal</h4>
+<ul>
+<li><a href="#" onclick="return false">Terms of Service</a></li>
+<li><a href="#" onclick="return false">Privacy Policy</a></li>
+<li><a href="#" onclick="return false">Disclaimer</a></li>
+</ul>
+</div>
+</div>
+<div class="footer-bottom">
+TR4NSFORM &middot; APAC &middot; Singapore<br>
+&copy; 2026 TR4NSFORM Pte. Ltd.<br>
+</div>
+</footer>
+
+<script>
+const peptides = [
+{name:"BPC-157",mech:"Systemic healing factor — accelerates GI tract and soft tissue repair",cat:"repair"},
+{name:"TB-500",mech:"Actin-binding protein — promotes cell migration and tissue regeneration",cat:"repair"},
+{name:"GHK-Cu",mech:"Copper-binding tripeptide — wound healing, collagen synthesis, anti-ageing",cat:"repair"},
+{name:"Epithalon",mech:"Telomerase activation and pineal peptide — epigenetic regulation of ageing",cat:"longevity"},
+{name:"Selank",mech:"Anxiolytic neuropeptide — modulates serotonin and GABA systems",cat:"cognitive"},
+{name:"Semax",mech:"Nootropic peptide — increases BDNF, enhances cognition and focus",cat:"cognitive"},
+{name:"Cerebrolysin",mech:"Neurotropic peptide mix — stimulates neurogenesis and synaptic plasticity",cat:"cognitive"},
+{name:"Dihexa",mech:"Small peptide mimetic — crosses BBB, promotes dendritic spine growth",cat:"cognitive"},
+{name:"DSIP",mech:"Delta sleep-inducing peptide — regulates sleep architecture and cortisol",cat:"cognitive"},
+{name:"GHRP-2",mech:"Growth hormone releasing peptide — stimulates pulsatile GH secretion",cat:"hormonal"},
+{name:"GHRP-6",mech:"GH secretagogue with appetite stimulation via ghrelin receptor agonism",cat:"hormonal"},
+{name:"Ipamorelin",mech:"Selective GH secretagogue — minimal prolactin or cortisol release",cat:"hormonal"},
+{name:"CJC-1295",mech:"GHRH analog with DAC — sustained GH release over 7+ days",cat:"hormonal"},
+{name:"Hexarelin",mech:"Potent GHRP analog — strong GH pulse stimulation, cortisol neutral",cat:"hormonal"},
+{name:"Tesamorelin",mech:"Synthetic GHRH — reduces visceral fat while increasing lean mass",cat:"hormonal"},
+{name:"AOD-9604",mech:"HGH fragment 177-191 — lipolytic, fat-burning without IGF-1 elevation",cat:"metabolic"},
+{name:"Fragment 176-191",mech:"Modified HGH fragment — targeted fat loss, no blood glucose impact",cat:"metabolic"},
+{name:"Semaglutide",mech:"GLP-1 receptor agonist — appetite suppression, glycemic control, weight loss",cat:"metabolic"},
+{name:"Tirzepatide",mech:"Dual GIP/GLP-1 agonist — superior glycemic control and weight reduction",cat:"metabolic"},
+{name:"PT-141",mech:"Melanocortin receptor agonist — libido enhancement, erectile function",cat:"performance"},
+{name:"Bremelanotide",mech:"Melanocortin agonist — FDA-approved for hypoactive sexual desire disorder",cat:"performance"},
+{name:"Melanotan II",mech:"Melanocortin analog — melanogenesis, libido, and erectile enhancement",cat:"performance"},
+{name:"KPV",mech:"Tripeptide fragment of alpha-MSH — anti-inflammatory, gut healing",cat:"immune"},
+{name:"VIP",mech:"Vasoactive intestinal peptide — pulmonary, anti-inflammatory, gut motility",cat:"immune"},
+{name:"LL-37",mech:"Cathelicidin antimicrobial peptide — broad-spectrum immune modulation",cat:"immune"},
+{name:"Thymosin Alpha-1",mech:"Thymic peptide — immune system regulator, T-cell maturation",cat:"immune"},
+{name:"Thymosin Beta-4",mech:"Actin-sequestering peptide — tissue repair, anti-inflammatory, cardiac protection",cat:"repair"},
+{name:"Larazotide",mech:"Zonulin antagonist — tight junction regulation, gut barrier integrity",cat:"repair"},
+{name:"SS-31",mech:"Mitochondrial-targeted peptide — electron transport chain optimization",cat:"longevity"},
+{name:"MOTS-c",mech:"Mitochondrial-derived peptide — regulates metabolic homeostasis and exercise response",cat:"longevity"},
+{name:"Humanin",mech:"Mitochondrial peptide — cytoprotective against oxidative stress and apoptosis",cat:"longevity"},
+{name:"ARA-290",mech:"Erythropoietin-derived peptide — neuropathic pain and nerve regeneration",cat:"repair"},
+{name:"Davunetide",mech:"ADNP fragment — neuroprotection, tauopathy inhibition, cognitive function",cat:"cognitive"},
+{name:"NAD+",mech:"Nicotinamide adenine dinucleotide — cellular energy, DNA repair, sirtuin activation",cat:"longevity"},
+{name:"NMN",mech:"Nicotinamide mononucleotide — NAD+ precursor, metabolic health and ageing",cat:"longevity"},
+{name:"Spermidine",mech:"Polyamine — autophagy induction, cardioprotection, anti-ageing",cat:"longevity"},
+{name:"Rapamycin",mech:"mTOR inhibitor — lifespan extension, immune modulation, senolysis",cat:"longevity"},
+{name:"Metformin",mech:"Biguanide AMPK activator — glycemic control, longevity, cancer prevention",cat:"metabolic"},
+{name:"Berberine",mech:"Plant alkaloid AMPK activator — glucose metabolism, lipid regulation",cat:"metabolic"},
+{name:"Fisetin",mech:"Senolytic flavonoid — clears senescent cells, neuroprotection",cat:"longevity"},
+{name:"Quercetin",mech:"Flavonol senolytic — antioxidant, senescent cell clearance, anti-inflammatory",cat:"longevity"},
+{name:"Resveratrol",mech:"Stilbenoid SIRT1 activator — cardioprotection, longevity, anti-oxidative",cat:"longevity"},
+{name:"Astaxanthin",mech:"Carotenoid antioxidant — mitochondrial protection, skin health, cognition",cat:"longevity"},
+{name:"CoQ10",mech:"Ubiquinone — mitochondrial electron transport chain cofactor, energy production",cat:"longevity"},
+{name:"PQQ",mech:"Pyrroloquinoline quinone — mitochondrial biogenesis, cognitive enhancement",cat:"longevity"},
+{name:"Urolithin A",mech:"Mitophagy inducer — mitochondrial renewal, muscle health, longevity",cat:"longevity"},
+{name:"TUDCA",mech:"Bile acid TUDCA — ER stress reduction, neuroprotection, liver health",cat:"longevity"},
+{name:"Taurine",mech:"Sulfur amino acid — mitochondrial health, longevity, cardiac function",cat:"longevity"},
+{name:"Methylene Blue",mech:"Thiazine dye — mitochondrial enhancer, cognitive function, antidepressant",cat:"cognitive"}
+];
+
+let currentFilter = 'all';
+let currentSearch = '';
+
+function renderPeptides(){
+const grid = document.getElementById('peptideGrid');
+const noRes = document.getElementById('noResults');
+const search = currentSearch.toLowerCase().trim();
+let filtered = peptides;
+
+if(currentFilter !== 'all'){
+filtered = filtered.filter(p => p.cat === currentFilter);
+}
+if(search){
+filtered = filtered.filter(p => p.name.toLowerCase().includes(search) || p.mech.toLowerCase().includes(search));
+}
+
+if(filtered.length === 0){
+noRes.style.display = 'block';
+grid.innerHTML = '';
+return;
+}
+noRes.style.display = 'none';
+
+grid.innerHTML = filtered.map(p => `
+<div class="peptide-card" data-cat="${p.cat}">
+<div class="p-name">${p.name}</div>
+<div class="p-mech">${p.mech}</div>
+<div class="p-tags"><span class="p-tag">${p.cat}</span></div>
+<a href="peptide-detail.html?peptide=${encodeURIComponent(p.name)}" class="p-view">View →</a>
+</div>
+`).join('');
+}
+
+function filterPeptides(){
+currentSearch = document.getElementById('peptideSearch').value;
+renderPeptides();
+}
+
+function setFilter(cat){
+currentFilter = cat;
+document.querySelectorAll('.filter-pill').forEach(p => p.classList.toggle('active', p.dataset.cat === cat));
+renderPeptides();
+}
+
+renderPeptides();
+</script>
+</body>
+</html>

@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard — TR4NSFORM</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Georgia:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:#080808;color:#fff;font-family:"Helvetica Neue",Arial,sans-serif;font-weight:300;line-height:1.6;-webkit-font-smoothing:antialiased}
+a{color:#C8D6E5;text-decoration:none;transition:color .2s}
+a:hover{color:#fff}
+::selection{background:rgba(200,214,229,.3);color:#fff}
+.container{max-width:1000px;margin:0 auto;padding:0 24px}
+/* Nav */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(8,8,8,.92);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-bottom:1px solid rgba(200,214,229,.08)}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;height:64px;max-width:1200px;margin:0 auto;padding:0 24px}
+.nav-logo{font-size:1.2rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#fff}
+.nav-logo span{color:#C8D6E5}
+.nav-links{display:flex;gap:28px;list-style:none;font-size:.85rem;font-weight:400;letter-spacing:.5px;text-transform:uppercase}
+.nav-links a{color:rgba(255,255,255,.65);padding:4px 0;border-bottom:1px solid transparent;transition:all .2s}
+.nav-links a:hover,.nav-links a.active{color:#fff;border-bottom-color:#C8D6E5}
+.mobile-menu-btn{display:none;background:none;border:none;color:#fff;font-size:1.5rem;cursor:pointer}
+/* Dashboard */
+.dashboard-wrap{padding:140px 24px 80px;min-height:100vh}
+.dash-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:40px;flex-wrap:wrap;gap:16px}
+.dash-header h1{font-family:Georgia,serif;font-size:1.8rem;font-weight:700}
+.dash-header .dash-user{display:flex;align-items:center;gap:12px}
+.dash-header .avatar{width:44px;height:44px;border-radius:50%;background:rgba(200,214,229,.1);border:1px solid rgba(200,214,229,.2);display:flex;align-items:center;justify-content:center;font-size:1rem;color:#C8D6E5;font-weight:500}
+/* Google Sign-in button */
+.google-btn{display:inline-flex;align-items:center;gap:10px;padding:12px 28px;background:#fff;color:#333;border-radius:4px;font-size:.88rem;font-weight:500;cursor:pointer;border:none;transition:all .2s;font-family:"Helvetica Neue",Arial,sans-serif}
+.google-btn:hover{background:#f0f0f0;box-shadow:0 2px 8px rgba(0,0,0,.1)}
+.google-btn .g-icon{font-size:1.2rem;font-weight:700;color:#4285F4}
+/* Signed-out state */
+.signed-out{text-align:center;padding:80px 0}
+.signed-out h2{font-family:Georgia,serif;font-size:1.6rem;font-weight:700;margin-bottom:12px}
+.signed-out p{color:rgba(255,255,255,.45);margin-bottom:28px;max-width:400px;margin-left:auto;margin-right:auto}
+/* Stats row */
+.stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:40px}
+.stat-card{background:rgba(255,255,255,.015);border:1px solid rgba(200,214,229,.06);border-radius:8px;padding:24px;text-align:center}
+.stat-card .stat-num{font-family:Georgia,serif;font-size:1.8rem;font-weight:700;color:#C8D6E5;margin-bottom:4px}
+.stat-card .stat-label{font-size:.8rem;color:rgba(255,255,255,.4);letter-spacing:.5px;text-transform:uppercase}
+/* Dashboard cards */
+.dash-section{margin-bottom:48px}
+.dash-section h2{font-size:1.2rem;font-weight:600;margin-bottom:16px;letter-spacing:-.2px}
+.dash-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px}
+.dash-card{background:rgba(255,255,255,.015);border:1px solid rgba(200,214,229,.06);border-radius:8px;padding:24px 20px;transition:all .2s;cursor:pointer}
+.dash-card:hover{background:rgba(255,255,255,.025);border-color:rgba(200,214,229,.12)}
+.dash-card .d-icon{font-size:1.5rem;margin-bottom:8px;color:#C8D6E5}
+.dash-card h3{font-size:1rem;font-weight:600;margin-bottom:4px}
+.dash-card .d-meta{font-size:.78rem;color:rgba(255,255,255,.35);margin-bottom:8px}
+.dash-card .d-status{display:inline-block;padding:2px 10px;border-radius:10px;font-size:.7rem;letter-spacing:.3px;text-transform:uppercase}
+.dash-card .d-status.locked{background:rgba(200,214,229,.04);border:1px solid rgba(200,214,229,.08);color:rgba(255,255,255,.3)}
+.dash-card .d-status.unlocked{background:rgba(200,214,229,.08);border:1px solid rgba(200,214,229,.15);color:#C8D6E5}
+/* Profile section */
+.profile-card{background:rgba(255,255,255,.015);border:1px solid rgba(200,214,229,.06);border-radius:8px;padding:32px}
+.profile-row{display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+.profile-avatar{width:64px;height:64px;border-radius:50%;background:rgba(200,214,229,.08);border:1px solid rgba(200,214,229,.15);display:flex;align-items:center;justify-content:center;font-size:1.4rem;color:#C8D6E5;font-weight:500}
+.profile-info h3{font-size:1.2rem;font-weight:600}
+.profile-info p{font-size:.85rem;color:rgba(255,255,255,.4)}
+/* Footer */
+footer{border-top:1px solid rgba(200,214,229,.06);padding:60px 0 40px}
+.footer-inner{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:40px;max-width:1200px;margin:0 auto;padding:0 24px}
+.footer-col h4{font-size:.8rem;font-weight:600;letter-spacing:2px;text-transform:uppercase;margin-bottom:16px;color:rgba(255,255,255,.8)}
+.footer-col ul{list-style:none}
+.footer-col ul li{margin-bottom:8px}
+.footer-col ul li a{font-size:.85rem;color:rgba(255,255,255,.4)}
+.footer-col ul li a:hover{color:#C8D6E5}
+.footer-bottom{margin-top:48px;padding-top:24px;border-top:1px solid rgba(200,214,229,.06);text-align:center;font-size:.75rem;color:rgba(255,255,255,.3);letter-spacing:.5px}
+.footer-bottom .watermark{color:rgba(200,214,229,.2);font-weight:400;margin-top:4px;letter-spacing:2px;font-size:.7rem}
+@media(max-width:768px){
+.nav-links{display:none;position:fixed;top:64px;left:0;right:0;background:rgba(8,8,8,.98);flex-direction:column;padding:24px;gap:16px;border-bottom:1px solid rgba(200,214,229,.08)}
+.nav-links.show{display:flex}
+.mobile-menu-btn{display:block}
+.dashboard-wrap{padding:100px 16px 60px}
+}
+</style>
+</head>
+<body>
+<nav>
+<div class="nav-inner">
+<a href="index.html" class="nav-logo">TR4NS<span>FORM</span></a>
+<button class="mobile-menu-btn" onclick="document.querySelector('.nav-links').classList.toggle('show')">☰</button>
+<ul class="nav-links">
+<li><a href="protocols.html">Protocols</a></li>
+<li><a href="peptides.html">Peptides</a></li>
+<li><a href="builder.html">Builder</a></li>
+<li><a href="dashboard.html" class="active">Dashboard</a></li>
+<li><a href="login.html">Login</a></li>
+</ul>
+</div>
+</nav>
+
+<div class="dashboard-wrap">
+<div class="container">
+
+<!-- DASHBOARD CONTENT (JS toggles) -->
+<div id="dashSignedOut" class="signed-out">
+<h2>Your Protocol Vault</h2>
+<p>Sign in to access your saved protocols, unlocked plans, and personalized dashboard.</p>
+<button class="google-btn" onclick="signIn()"><span class="g-icon">G</span> Sign in with Google</button>
+</div>
+
+<div id="dashSignedIn" style="display:none">
+<div class="dash-header">
+<h1>Dashboard</h1>
+<div class="dash-user">
+<span id="dashUserName" style="font-size:.9rem;color:rgba(255,255,255,.6)">T. Jenni</span>
+<div class="avatar" id="dashAvatar">TJ</div>
+<button class="btn" style="padding:6px 16px;font-size:.75rem;background:transparent;border:1px solid rgba(200,214,229,.15);color:rgba(255,255,255,.4);border-radius:4px;cursor:pointer" onclick="signOut()">Sign Out</button>
+</div>
+</div>
+
+<div class="stats-row">
+<div class="stat-card">
+<div class="stat-num">2</div>
+<div class="stat-label">Saved Protocols</div>
+</div>
+<div class="stat-card">
+<div class="stat-num">1</div>
+<div class="stat-label">Unlocked Plans</div>
+</div>
+<div class="stat-card">
+<div class="stat-num">5</div>
+<div class="stat-label">Library Views</div>
+</div>
+</div>
+
+<div class="dash-section">
+<h2>Saved Protocols</h2>
+<div class="dash-grid">
+<div class="dash-card">
+<div class="d-icon">🌙</div>
+<h3>Sleep Architecture</h3>
+<div class="d-meta">Saved Mar 14, 2026</div>
+<span class="d-status locked">🔒 Locked</span>
+</div>
+<div class="dash-card">
+<div class="d-icon">🧠</div>
+<h3>Brain & Cognition</h3>
+<div class="d-meta">Saved Feb 28, 2026</div>
+<span class="d-status unlocked">🔓 Unlocked</span>
+</div>
+</div>
+</div>
+
+<div class="dash-section">
+<h2>Unlocked Content</h2>
+<div class="dash-grid">
+<div class="dash-card" onclick="window.location='protocol-detail.html?protocol=brain'">
+<div class="d-icon">🧠</div>
+<h3>Brain & Cognition Protocol</h3>
+<div class="d-meta">Full injection plan · Dosing table · Cycling schedule</div>
+<span class="d-status unlocked">🔓 Accessible</span>
+</div>
+</div>
+</div>
+
+<div class="dash-section">
+<h2>Profile</h2>
+<div class="profile-card">
+<div class="profile-row">
+<div class="profile-avatar">TJ</div>
+<div class="profile-info">
+<h3 id="profileName">T. Jenni</h3>
+<p id="profileEmail">t.jenni@example.com &middot; Member since 2026</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<footer>
+<div class="footer-inner">
+<div class="footer-col">
+<h4>TR4NSFORM</h4>
+<ul>
+<li><a href="index.html">Home</a></li>
+<li><a href="protocols.html">Protocols</a></li>
+<li><a href="peptides.html">Peptides</a></li>
+<li><a href="builder.html">Builder</a></li>
+</ul>
+</div>
+<div class="footer-col">
+<h4>Account</h4>
+<ul>
+<li><a href="dashboard.html">Dashboard</a></li>
+<li><a href="login.html">Login</a></li>
+</ul>
+</div>
+<div class="footer-col">
+<h4>Legal</h4>
+<ul>
+<li><a href="#" onclick="return false">Terms of Service</a></li>
+<li><a href="#" onclick="return false">Privacy Policy</a></li>
+<li><a href="#" onclick="return false">Disclaimer</a></li>
+</ul>
+</div>
+</div>
+<div class="footer-bottom">
+TR4NSFORM &middot; APAC &middot; Singapore<br>
+&copy; 2026 TR4NSFORM Pte. Ltd.<br>
+</div>
+</footer>
+
+<script>
+let isSignedIn = false;
+
+function signIn(){
+isSignedIn = true;
+document.getElementById('dashSignedOut').style.display = 'none';
+document.getElementById('dashSignedIn').style.display = 'block';
+}
+
+function signOut(){
+isSignedIn = false;
+document.getElementById('dashSignedOut').style.display = 'block';
+document.getElementById('dashSignedIn').style.display = 'none';
+}
+
+// Auto-check for login state from localStorage mock
+(function(){
+const state = localStorage.getItem('tr4nsform_logged_in');
+if(state === 'true') signIn();
+})();
+</script>
+</body>
+</html>

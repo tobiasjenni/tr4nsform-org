@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>12 Precision Protocols — TR4NSFORM</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Georgia:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:#080808;color:#fff;font-family:"Helvetica Neue",Arial,sans-serif;font-weight:300;line-height:1.6;-webkit-font-smoothing:antialiased}
+a{color:#C8D6E5;text-decoration:none;transition:color .2s}
+a:hover{color:#fff}
+::selection{background:rgba(200,214,229,.3);color:#fff}
+.container{max-width:1200px;margin:0 auto;padding:0 24px}
+/* Nav */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(8,8,8,.92);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-bottom:1px solid rgba(200,214,229,.08)}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;height:64px;max-width:1200px;margin:0 auto;padding:0 24px}
+.nav-logo{font-size:1.2rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#fff}
+.nav-logo span{color:#C8D6E5}
+.nav-links{display:flex;gap:28px;list-style:none;font-size:.85rem;font-weight:400;letter-spacing:.5px;text-transform:uppercase}
+.nav-links a{color:rgba(255,255,255,.65);padding:4px 0;border-bottom:1px solid transparent;transition:all .2s}
+.nav-links a:hover,.nav-links a.active{color:#fff;border-bottom-color:#C8D6E5}
+.mobile-menu-btn{display:none;background:none;border:none;color:#fff;font-size:1.5rem;cursor:pointer}
+/* Hero */
+.page-hero{padding:140px 24px 60px;text-align:center;position:relative}
+.page-hero::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:radial-gradient(ellipse at center 40%,rgba(200,214,229,.03) 0%,transparent 60%);pointer-events:none}
+.page-hero h1{font-family:Georgia,serif;font-size:clamp(2rem,4vw,3.2rem);font-weight:700;position:relative;z-index:1}
+.page-hero p{color:rgba(255,255,255,.5);margin-top:12px;font-size:1.05rem;position:relative;z-index:1}
+/* Protocol Grid */
+.protocols-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px;padding:0 24px 80px;max-width:1200px;margin:0 auto}
+.protocol-card{background:rgba(255,255,255,.015);border:1px solid rgba(200,214,229,.06);border-radius:8px;padding:36px 28px;transition:all .3s;display:flex;flex-direction:column}
+.protocol-card:hover{background:rgba(255,255,255,.03);border-color:rgba(200,214,229,.15);transform:translateY(-2px);box-shadow:0 8px 30px rgba(200,214,229,.03)}
+.protocol-card .p-icon{font-size:2.2rem;margin-bottom:12px;color:#C8D6E5}
+.protocol-card h3{font-size:1.1rem;font-weight:600;margin-bottom:8px;letter-spacing:-.2px}
+.protocol-card p{color:rgba(255,255,255,.5);font-size:.88rem;line-height:1.6;margin-bottom:20px;flex:1}
+.protocol-card .btn-card{display:inline-block;padding:10px 24px;border:1px solid rgba(200,214,229,.3);border-radius:4px;color:#C8D6E5;font-size:.8rem;font-weight:500;letter-spacing:.5px;text-transform:uppercase;transition:all .2s;align-self:flex-start}
+.protocol-card .btn-card:hover{background:rgba(200,214,229,.08);border-color:#C8D6E5}
+/* Footer */
+footer{border-top:1px solid rgba(200,214,229,.06);padding:60px 0 40px;margin-top:0}
+.footer-inner{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:40px;max-width:1200px;margin:0 auto;padding:0 24px}
+.footer-col h4{font-size:.8rem;font-weight:600;letter-spacing:2px;text-transform:uppercase;margin-bottom:16px;color:rgba(255,255,255,.8)}
+.footer-col ul{list-style:none}
+.footer-col ul li{margin-bottom:8px}
+.footer-col ul li a{font-size:.85rem;color:rgba(255,255,255,.4)}
+.footer-col ul li a:hover{color:#C8D6E5}
+.footer-bottom{margin-top:48px;padding-top:24px;border-top:1px solid rgba(200,214,229,.06);text-align:center;font-size:.75rem;color:rgba(255,255,255,.3);letter-spacing:.5px}
+.footer-bottom .watermark{color:rgba(200,214,229,.2);font-weight:400;margin-top:4px;letter-spacing:2px;font-size:.7rem}
+@media(max-width:768px){
+.nav-links{display:none;position:fixed;top:64px;left:0;right:0;background:rgba(8,8,8,.98);flex-direction:column;padding:24px;gap:16px;border-bottom:1px solid rgba(200,214,229,.08)}
+.nav-links.show{display:flex}
+.mobile-menu-btn{display:block}
+.protocols-grid{grid-template-columns:1fr;padding-left:24px;padding-right:24px}
+.page-hero{padding:100px 24px 40px}
+}
+</style>
+</head>
+<body>
+<nav>
+<div class="nav-inner">
+<a href="index.html" class="nav-logo">TR4NS<span>FORM</span></a>
+<button class="mobile-menu-btn" onclick="document.querySelector('.nav-links').classList.toggle('show')">☰</button>
+<ul class="nav-links">
+<li><a href="protocols.html" class="active">Protocols</a></li>
+<li><a href="peptides.html">Peptides</a></li>
+<li><a href="builder.html">Builder</a></li>
+<li><a href="dashboard.html">Dashboard</a></li>
+<li><a href="login.html">Login</a></li>
+</ul>
+</div>
+</nav>
+
+<section class="page-hero">
+<h1>12 Precision Protocols</h1>
+<p>Clinically structured protocols for every domain of human performance and longevity.</p>
+</section>
+
+<div class="protocols-grid">
+<div class="protocol-card">
+<div class="p-icon">🌙</div>
+<h3>Sleep Architecture</h3>
+<p>Deep sleep optimization through peptide-mediated GABA modulation, cortisol regulation, and circadian entrainment.</p>
+<a href="protocol-detail.html?protocol=sleep" class="btn-card">View Protocol</a>
+</div>
+<div class="protocol-card">
+<div class="p-icon">🧘</div>
+<h3>Calm & Resilience</h3>
+<p>Anxiolytic protocols leveraging neuropeptide modulation for stress reduction without cognitive blunting.</p>
+<a href="protocol-detail.html?protocol=calm" class="btn-card">View Protocol</a>
+</div>
+<div class="protocol-card">
+<div class="p-icon">🧠</div>
+<h3>Brain & Cognition</h3>
+<p>Cognitive enhancement through nootropic peptides, neurogenesis promoters, and synaptic optimization.</p>
+<a href="protocol-detail.html?protocol=brain" class="btn-card">View Protocol</a>
+</div>
+<div class="protocol-card">
+<div class="p-icon">⚡</div>
+<h3>Energy & Mitochondria</h3>
+<p>Mitochondrial biogenesis and cellular energy production via mitochondrial peptides and NAD+ precursors.</p>
+<a href="protocol-detail.html?protocol=energy" class="btn-card">View Protocol</a>
+</div>
+<div class="protocol-card">
+<div class="p-icon">🫀</div>
+<h3>Gut Microbiome</h3>
+<p>Gastrointestinal healing, mucosal integrity, and microbiome modulation through targeted peptide therapy.</p>
+<a href="protocol-detail.html?protocol=gut" class="btn-card">View Protocol</a>
+</div>
+<div class="protocol-card">
+<div class="p-icon">🛡️</div>
+<h3>Immune Fortification</h3>
+<p>Immune system optimization using thymic peptides, antimicrobial peptides, and immune-modulating compounds.</p>
+<a href="protocol-detail.html?protocol=immune" class="btn-card">View Protocol</a>
+</div>
+<div class="protocol-card">
+<div class="p-icon">🔄</div>
+<h3>Recovery & Repair</h3>
+<p>Accelerated tissue repair, injury recovery, and inflammation resolution via regenerative peptide protocols.</p>
+<a href="protocol-detail.html?protocol=recovery" class="btn-card">View Protocol</a>
+</div>
+<div class="protocol-card">
+<div class="p-icon">⚖️</div>
+<h3>Hormonal Balance</h3>
+<p>Endocrine optimization through growth hormone secretagogues and peptide-mediated hormone regulation.</p>
+<a href="protocol-detail.html?protocol=hormones" class="btn-card">View Protocol</a>
+</div>
+<div class="protocol-card">
+<div class="p-icon">⌛</div>
+<h3>Longevity & Anti-Ageing</h3>
+<p>Comprehensive ageing intervention combining senolytic, mitochondrial, and epigenetic modulation peptides.</p>
+<a href="protocol-detail.html?protocol=longevity" class="btn-card">View Protocol</a>
+</div>
+<div class="protocol-card">
+<div class="p-icon">🏆</div>
+<h3>Peak Performance</h3>
+<p>Athletic optimization for strength, endurance, and recovery using performance-enhancing peptide stacks.</p>
+<a href="protocol-detail.html?protocol=performance" class="btn-card">View Protocol</a>
+</div>
+<div class="protocol-card">
+<div class="p-icon">🔥</div>
+<h3>Metabolic Optimisation</h3>
+<p>Metabolic rate enhancement, fat oxidation, and insulin sensitivity through metabolic peptide protocols.</p>
+<a href="protocol-detail.html?protocol=metabolic" class="btn-card">View Protocol</a>
+</div>
+<div class="protocol-card">
+<div class="p-icon">💕</div>
+<h3>Sensu (Intimacy & Vitality)</h3>
+<p>Libido enhancement, sexual health, and intimate vitality through melanocortin and vasoactive peptide protocols.</p>
+<a href="protocol-detail.html?protocol=sensu" class="btn-card">View Protocol</a>
+</div>
+</div>
+
+<footer>
+<div class="footer-inner">
+<div class="footer-col">
+<h4>TR4NSFORM</h4>
+<ul>
+<li><a href="index.html">Home</a></li>
+<li><a href="protocols.html">Protocols</a></li>
+<li><a href="peptides.html">Peptides</a></li>
+<li><a href="builder.html">Builder</a></li>
+</ul>
+</div>
+<div class="footer-col">
+<h4>Account</h4>
+<ul>
+<li><a href="dashboard.html">Dashboard</a></li>
+<li><a href="login.html">Login</a></li>
+</ul>
+</div>
+<div class="footer-col">
+<h4>Legal</h4>
+<ul>
+<li><a href="#" onclick="return false">Terms of Service</a></li>
+<li><a href="#" onclick="return false">Privacy Policy</a></li>
+<li><a href="#" onclick="return false">Disclaimer</a></li>
+</ul>
+</div>
+</div>
+<div class="footer-bottom">
+TR4NSFORM &middot; APAC &middot; Singapore<br>
+&copy; 2026 TR4NSFORM Pte. Ltd.<br>
+</div>
+</footer>
+</body>
+</html>

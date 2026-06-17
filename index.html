@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TR4NSFORM — Precision Peptide Protocols</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Georgia:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:#080808;color:#fff;font-family:"Helvetica Neue",Arial,sans-serif;font-weight:300;line-height:1.6;-webkit-font-smoothing:antialiased}
+a{color:#C8D6E5;text-decoration:none;transition:color .2s}
+a:hover{color:#fff}
+img{max-width:100%}
+::selection{background:rgba(200,214,229,.3);color:#fff}
+.container{max-width:1200px;margin:0 auto;padding:0 24px}
+/* Nav */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(8,8,8,.92);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-bottom:1px solid rgba(200,214,229,.08)}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;height:64px;max-width:1200px;margin:0 auto;padding:0 24px}
+.nav-logo{font-size:1.2rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#fff}
+.nav-logo span{color:#C8D6E5}
+.nav-links{display:flex;gap:28px;list-style:none;font-size:.85rem;font-weight:400;letter-spacing:.5px;text-transform:uppercase}
+.nav-links a{color:rgba(255,255,255,.65);padding:4px 0;border-bottom:1px solid transparent;transition:all .2s}
+.nav-links a:hover,.nav-links a.active{color:#fff;border-bottom-color:#C8D6E5}
+.mobile-menu-btn{display:none;background:none;border:none;color:#fff;font-size:1.5rem;cursor:pointer}
+/* Hero */
+.hero{min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;position:relative;overflow:hidden;padding:120px 24px 80px}
+.hero::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(ellipse at 30% 40%,rgba(200,214,229,.04) 0%,transparent 60%),radial-gradient(ellipse at 70% 60%,rgba(200,214,229,.02) 0%,transparent 50%);pointer-events:none}
+.hero-content{position:relative;z-index:1;max-width:900px}
+.hero h1{font-family:Georgia,serif;font-size:clamp(2.8rem,7vw,5.5rem);font-weight:700;line-height:1.05;margin-bottom:24px;letter-spacing:-1px}
+.hero h1 span{color:#C8D6E5;text-shadow:0 0 40px rgba(200,214,229,.15)}
+.hero p{font-size:clamp(1rem,1.8vw,1.3rem);color:rgba(255,255,255,.6);max-width:600px;margin:0 auto 40px;line-height:1.7}
+.hero-cta{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+.btn{display:inline-block;padding:14px 36px;border-radius:4px;font-size:.9rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:all .3s;border:1px solid transparent}
+.btn-primary{background:#C8D6E5;color:#080808;border-color:#C8D6E5}
+.btn-primary:hover{background:#fff;border-color:#fff;color:#080808;box-shadow:0 0 30px rgba(200,214,229,.2)}
+.btn-outline{background:transparent;color:#C8D6E5;border-color:rgba(200,214,229,.4)}
+.btn-outline:hover{background:rgba(200,214,229,.08);border-color:#C8D6E5;box-shadow:0 0 20px rgba(200,214,229,.1)}
+/* Sections */
+section{padding:100px 0}
+.section-label{font-size:.75rem;letter-spacing:3px;text-transform:uppercase;color:rgba(200,214,229,.5);margin-bottom:8px;font-weight:400}
+.section-title{font-family:Georgia,serif;font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:700;margin-bottom:16px;line-height:1.2}
+.section-sub{color:rgba(255,255,255,.5);max-width:600px;margin-bottom:60px;font-size:1.05rem}
+/* Problem Cards */
+.problem-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px}
+.problem-card{background:rgba(255,255,255,.02);border:1px solid rgba(200,214,229,.08);border-radius:8px;padding:40px 32px;transition:all .3s;position:relative;overflow:hidden}
+.problem-card::before{content:'';position:absolute;top:0;left:0;width:100%;height:2px;background:linear-gradient(90deg,transparent,#C8D6E5,transparent);opacity:0;transition:opacity .3s}
+.problem-card:hover::before{opacity:1}
+.problem-card:hover{background:rgba(255,255,255,.04);border-color:rgba(200,214,229,.2);transform:translateY(-2px)}
+.problem-card .icon{font-size:2rem;margin-bottom:16px;color:#C8D6E5}
+.problem-card h3{font-size:1.2rem;font-weight:600;margin-bottom:12px}
+.problem-card p{color:rgba(255,255,255,.55);font-size:.95rem;line-height:1.7}
+.problem-card .solve{display:inline-block;margin-top:16px;padding:4px 14px;border:1px solid rgba(200,214,229,.2);border-radius:20px;font-size:.75rem;color:#C8D6E5;letter-spacing:.5px;text-transform:uppercase}
+/* Steps */
+.steps-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:40px;counter-reset:step}
+.step-card{text-align:center;padding:40px 24px;position:relative}
+.step-card::before{counter-increment:step;content:"0" counter(step);position:absolute;top:0;left:50%;transform:translateX(-50%);font-family:Georgia,serif;font-size:4rem;font-weight:700;color:rgba(200,214,229,.06);line-height:1}
+.step-number{display:flex;align-items:center;justify-content:center;width:48px;height:48px;border-radius:50%;border:1px solid rgba(200,214,229,.2);color:#C8D6E5;font-size:.85rem;font-weight:600;margin:0 auto 20px;position:relative;z-index:1;background:rgba(8,8,8,.8)}
+.step-card h3{font-size:1.2rem;font-weight:600;margin-bottom:10px}
+.step-card p{color:rgba(255,255,255,.5);font-size:.95rem;line-height:1.7;max-width:320px;margin:0 auto}
+/* Protocol Categories Grid */
+.categories-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px}
+.cat-card{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:28px 16px;background:rgba(255,255,255,.015);border:1px solid rgba(200,214,229,.06);border-radius:6px;transition:all .3s;cursor:pointer;min-height:140px}
+.cat-card:hover{background:rgba(200,214,229,.04);border-color:rgba(200,214,229,.2);transform:translateY(-2px);box-shadow:0 8px 30px rgba(200,214,229,.04)}
+.cat-card .cat-icon{font-size:1.8rem;margin-bottom:8px;color:#C8D6E5;line-height:1}
+.cat-card .cat-name{font-size:.8rem;font-weight:500;letter-spacing:.3px;color:rgba(255,255,255,.75)}
+/* Freemium */
+.freemium{background:linear-gradient(180deg,rgba(200,214,229,.02) 0%,transparent 100%);border-top:1px solid rgba(200,214,229,.06);border-bottom:1px solid rgba(200,214,229,.06);text-align:center}
+.freemium .section-title{max-width:700px;margin:0 auto 16px}
+.freemium .section-sub{margin-left:auto;margin-right:auto;margin-bottom:40px}
+.freemium-cta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.price-badge{display:inline-block;padding:6px 20px;background:rgba(200,214,229,.08);border:1px solid rgba(200,214,229,.15);border-radius:20px;font-size:.8rem;color:#C8D6E5;letter-spacing:.5px}
+/* Footer */
+footer{border-top:1px solid rgba(200,214,229,.06);padding:60px 0 40px}
+.footer-inner{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:40px;max-width:1200px;margin:0 auto;padding:0 24px}
+.footer-col h4{font-size:.8rem;font-weight:600;letter-spacing:2px;text-transform:uppercase;margin-bottom:16px;color:rgba(255,255,255,.8)}
+.footer-col ul{list-style:none}
+.footer-col ul li{margin-bottom:8px}
+.footer-col ul li a{font-size:.85rem;color:rgba(255,255,255,.4)}
+.footer-col ul li a:hover{color:#C8D6E5}
+.footer-bottom{margin-top:48px;padding-top:24px;border-top:1px solid rgba(200,214,229,.06);text-align:center;font-size:.75rem;color:rgba(255,255,255,.3);letter-spacing:.5px}
+.footer-bottom .watermark{color:rgba(200,214,229,.2);font-weight:400;margin-top:4px;letter-spacing:2px;font-size:.7rem}
+/* Mobile */
+@media(max-width:768px){
+.nav-links{display:none;position:fixed;top:64px;left:0;right:0;background:rgba(8,8,8,.98);flex-direction:column;padding:24px;gap:16px;border-bottom:1px solid rgba(200,214,229,.08)}
+.nav-links.show{display:flex}
+.mobile-menu-btn{display:block}
+section{padding:60px 0}
+.categories-grid{grid-template-columns:repeat(auto-fill,minmax(130px,1fr))}
+.hero h1{font-size:clamp(2rem,10vw,3.2rem)}
+.hero{padding:100px 24px 60px}
+.problem-grid{grid-template-columns:1fr}
+.steps-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<nav>
+<div class="nav-inner">
+<a href="/" class="nav-logo">TR4NS<span>FORM</span></a>
+<button class="mobile-menu-btn" onclick="document.querySelector('.nav-links').classList.toggle('show')">☰</button>
+<ul class="nav-links">
+<li><a href="protocols.html">Protocols</a></li>
+<li><a href="peptides.html">Peptides</a></li>
+<li><a href="builder.html">Builder</a></li>
+<li><a href="dashboard.html">Dashboard</a></li>
+<li><a href="login.html">Login</a></li>
+</ul>
+</div>
+</nav>
+
+<section class="hero">
+<div class="hero-content">
+<h1>Own Your <span>Biology.</span></h1>
+<p>Precision peptide protocols. Evidence-based. No gatekeepers. Your biology. Precision protocols. Evidence-based.</p>
+<div class="hero-cta">
+<a href="protocols.html" class="btn btn-primary">Browse Protocols</a>
+<a href="builder.html" class="btn btn-outline">Build My Protocol</a>
+</div>
+</div>
+</section>
+
+<section>
+<div class="container">
+<div class="section-label">The Problem</div>
+<h2 class="section-title">Peptides shouldn't be a guess.</h2>
+<p class="section-sub">Without a clinical framework, peptide self-experimentation is risky. TR4NSFORM brings precision to every step.</p>
+<div class="problem-grid">
+<div class="problem-card">
+<div class="icon">🔬</div>
+<h3>Ordering blind from China</h3>
+<p>Sourcing from unverified suppliers without knowing purity, storage, or reconstitution. TR4NSFORM provides vendor vetting protocols and quality benchmarks.</p>
+<span class="solve">Solved</span>
+</div>
+<div class="problem-card">
+<div class="icon">📋</div>
+<h3>No dosage guidance</h3>
+<p>Guesswork dosing leads to suboptimal results or adverse effects. Every TR4NSFORM protocol includes evidence-based dosing calibrated to your goals.</p>
+<span class="solve">Solved</span>
+</div>
+<div class="problem-card">
+<div class="icon">💉</div>
+<h3>No injection plans</h3>
+<p>No schedule, no rotation strategy, no cycling framework. TR4NSFORM provides complete injection plans with timing, frequency, and stacking logic.</p>
+<span class="solve">Solved</span>
+</div>
+</div>
+</div>
+</section>
+
+<section>
+<div class="container">
+<div class="section-label">How It Works</div>
+<h2 class="section-title">Three steps to precision.</h2>
+<p class="section-sub">From goals to protocol in minutes. No fluff, no nonsense.</p>
+<div class="steps-grid">
+<div class="step-card">
+<div class="step-number">01</div>
+<h3>Set your goals</h3>
+<p>Select from 12 domains — sleep, cognition, recovery, longevity, and more. Tell us about your biology.</p>
+</div>
+<div class="step-card">
+<div class="step-number">02</div>
+<h3>Get your protocol</h3>
+<p>Our system matches your profile to a precision protocol with specific peptides, dosages, and timing.</p>
+</div>
+<div class="step-card">
+<div class="step-number">03</div>
+<h3>Unlock your plan</h3>
+<p>Access the full injection plan, cycling schedule, stacking guide, and clinical references for a one-time fee.</p>
+</div>
+</div>
+</div>
+</section>
+
+<section>
+<div class="container">
+<div class="section-label">Protocol Categories</div>
+<h2 class="section-title">12 domains of precision.</h2>
+<p class="section-sub">Each protocol is independently researched, clinically structured, and updated for 2026.</p>
+<div class="categories-grid">
+<a href="protocols.html" class="cat-card"><span class="cat-icon">🌙</span><span class="cat-name">Sleep</span></a>
+<a href="protocols.html" class="cat-card"><span class="cat-icon">🧘</span><span class="cat-name">Calm</span></a>
+<a href="protocols.html" class="cat-card"><span class="cat-icon">🧠</span><span class="cat-name">Brain</span></a>
+<a href="protocols.html" class="cat-card"><span class="cat-icon">⚡</span><span class="cat-name">Energy</span></a>
+<a href="protocols.html" class="cat-card"><span class="cat-icon">🫀</span><span class="cat-name">Gut</span></a>
+<a href="protocols.html" class="cat-card"><span class="cat-icon">🛡️</span><span class="cat-name">Immunity</span></a>
+<a href="protocols.html" class="cat-card"><span class="cat-icon">🔄</span><span class="cat-name">Recovery</span></a>
+<a href="protocols.html" class="cat-card"><span class="cat-icon">⚖️</span><span class="cat-name">Hormones</span></a>
+<a href="protocols.html" class="cat-card"><span class="cat-icon">⌛</span><span class="cat-name">Longevity</span></a>
+<a href="protocols.html" class="cat-card"><span class="cat-icon">🏆</span><span class="cat-name">Performance</span></a>
+<a href="protocols.html" class="cat-card"><span class="cat-icon">🔥</span><span class="cat-name">Metabolic</span></a>
+<a href="protocols.html" class="cat-card"><span class="cat-icon">💕</span><span class="cat-name">Sensu</span></a>
+</div>
+</div>
+</section>
+
+<section class="freemium">
+<div class="container">
+<div class="section-label">Freemium Model</div>
+<h2 class="section-title">Knowledge is the compound.</h2>
+<p class="section-sub">Every protocol overview, peptide mechanism, and research summary is free. Your full injection plan unlocks for a single payment. No subscriptions. No recurring fees.</p>
+<div class="freemium-cta">
+<a href="protocols.html" class="btn btn-outline">Browse Free Content</a>
+<a href="builder.html" class="btn btn-primary">Unlock for $9</a>
+</div>
+<p class="price-badge" style="margin-top:20px">One-time payment &middot; Instant access &middot; Yours forever</p>
+</div>
+</section>
+
+<footer>
+<div class="footer-inner">
+<div class="footer-col">
+<h4>TR4NSFORM</h4>
+<ul>
+<li><a href="index.html">Home</a></li>
+<li><a href="protocols.html">Protocols</a></li>
+<li><a href="peptides.html">Peptides</a></li>
+<li><a href="builder.html">Builder</a></li>
+</ul>
+</div>
+<div class="footer-col">
+<h4>Account</h4>
+<ul>
+<li><a href="dashboard.html">Dashboard</a></li>
+<li><a href="login.html">Login</a></li>
+</ul>
+</div>
+<div class="footer-col">
+<h4>Legal</h4>
+<ul>
+<li><a href="#" onclick="return false">Terms of Service</a></li>
+<li><a href="#" onclick="return false">Privacy Policy</a></li>
+<li><a href="#" onclick="return false">Disclaimer</a></li>
+</ul>
+</div>
+</div>
+<div class="footer-bottom">
+TR4NSFORM &middot; APAC &middot; Singapore<br>
+&copy; 2026 TR4NSFORM Pte. Ltd.<br>
+</div>
+</footer>
+</body>
+</html>
